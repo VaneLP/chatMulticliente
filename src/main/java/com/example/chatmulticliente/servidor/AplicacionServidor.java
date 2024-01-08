@@ -12,9 +12,9 @@ public class AplicacionServidor extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //para agregar el css
-        Application.setUserAgentStylesheet(String.valueOf(AplicacionClienteChat.class.getResource("dracula.css")));
+        Application.setUserAgentStylesheet(String.valueOf(AplicacionServidor.class.getResource("/com/example/chatmulticliente/dracula.css")));
         //leemos el FXML
-        FXMLLoader fxmlLoader = new FXMLLoader(AplicacionClienteChat.class.getResource("servidor.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(AplicacionServidor.class.getResource("servidor.fxml"));
         //redimensionamos la ventana
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         //agregamos un titulo a la ventana

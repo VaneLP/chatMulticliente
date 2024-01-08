@@ -1,4 +1,4 @@
-package com.example.chatmulticliente;
+package com.example.chatmulticliente.servidor;
 
 import com.example.chatmulticliente.servidor.LanzarServidor;
 

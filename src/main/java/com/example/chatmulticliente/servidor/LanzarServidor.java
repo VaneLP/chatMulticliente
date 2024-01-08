@@ -1,8 +1,5 @@
 package com.example.chatmulticliente.servidor;
 
-import com.example.chatmulticliente.HiloConexion;
-import com.example.chatmulticliente.servidor.ControladorServidor;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
