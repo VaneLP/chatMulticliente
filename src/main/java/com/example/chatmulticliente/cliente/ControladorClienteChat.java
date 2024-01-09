@@ -1,9 +1,9 @@
 package com.example.chatmulticliente.cliente;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -43,6 +44,8 @@ public class ControladorClienteChat implements Initializable {
     private InetSocketAddress direccion;
     private BufferedReader flujoEntrada;
     private PrintWriter flujoSalida;
+    private Color[] listaColores = new Color[]{Color.rgb(149,128,255),Color.PINK,Color.LIGHTGREEN,Color.PEACHPUFF};
+    private Color colo;
 
     // ---- METODOS ----
     @Override
@@ -80,14 +83,17 @@ public class ControladorClienteChat implements Initializable {
             flujoSalida = new PrintWriter(conexion.getOutputStream());
             textoNick.setStyle("-fx-text-fill: WHITE");
 
-//            textArea.setStyle("-fx-text-fill: skyblue;");
-//            textArea.setText("Conexión establecida\n");
-
-
-
             escribirColor("Conexión establecida", Color.SKYBLUE);
             flujoSalida.println("CON " + this.campoNick.getText());
             flujoSalida.flush();
+
+            //-- COLORES --
+            String lectura = flujoEntrada.readLine();
+            int numUser= Integer.parseInt(lectura);
+
+            colo = listaColores[numUser%4];
+
+            System.out.println("NUMERO " + numUser + " COLOR "+ colo.toString());
 
         } catch (IOException e) {
             System.out.println("Se ha producido algún error en la conexión");
@@ -100,20 +106,21 @@ public class ControladorClienteChat implements Initializable {
         new Thread(new HiloRecibirCliente(this)).start();
     }
 
-    public void escribir(String mensaje) {
-        escribirColor("("+campoNick.getText()+") "+mensaje, Color.rgb(149,128,255));
-        scrollPane.setVvalue(1.0);
-
-        //letras
-//        textArea.setStyle("-fx-text-fill: #9580ff;");
+//    public void escribir(String mensaje) {
+//            System.out.println(colo);
 //
-//        textArea.appendText("("+campoNick.getText()+") "+mensaje+"\n");
-    }
+//            escribirColor(mensaje, colo);
+//
+//            scrollPane.setVvalue(1.0);
+//
+//    }
+
     private void enviar() {
-        flujoSalida.println(mensaje);
+        flujoSalida.println("MSG "+ "("+campoNick.getText()+") "+ mensaje.getText());
         flujoSalida.flush();
 
-        escribir(mensaje.getText());
+        flujoSalida.println(colo);
+        flujoSalida.flush();
 
         this.mensaje.setText("");
     }
@@ -122,23 +129,16 @@ public class ControladorClienteChat implements Initializable {
         return flujoEntrada;
     }
 
-    private void escribirColor(String mensaje, Color c) {
-        //TextFlow textFlow = new TextFlow();
-        Text text = new Text(mensaje + "\n");
+    public void escribirColor(String mensaje, Color c) {
+        Platform.runLater(() -> {
+            Text text = new Text(mensaje + "\n");
 
-        text.setFill(c);
-        //textFlow.getChildren().add(text);
-        //panelInfo=new Pane();
-        //this.panelInfo.getChildren().add(textFlow);
+            text.setFill(c);
 
-        //if (panelInfo != null) {
             panelInfo.getChildren().add(text);
-            //System.out.println("no soy nulo");
 
-       // } else {
-            // Si panelInfo es null, puedes imprimir un mensaje para depuración
-           // System.out.println("panelInfo es null");
-       // }
+            scrollPane.setVvalue(1.0);
+        });
     }
 
 

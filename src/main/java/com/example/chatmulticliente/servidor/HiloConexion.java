@@ -1,6 +1,7 @@
 package com.example.chatmulticliente.servidor;
 
 import com.example.chatmulticliente.servidor.LanzarServidor;
+import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +14,7 @@ public class HiloConexion implements Runnable{
     private LanzarServidor servidor;
     private BufferedReader flujoEntrada;
     private PrintWriter flujoSalida;
+    private static int userCont=0;
 
     public HiloConexion(LanzarServidor servidor, Socket conexion) {
         this.conexion = conexion;
@@ -22,17 +24,23 @@ public class HiloConexion implements Runnable{
     @Override
     public void run() {
         try {
-            flujoEntrada = new BufferedReader(new
-                    InputStreamReader(conexion.getInputStream()));
+            flujoEntrada = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
             flujoSalida = new PrintWriter(conexion.getOutputStream());
+
             while (true) {
                 String lectura = flujoEntrada.readLine();
                 String comando = lectura.substring(0, 3);
+
                 if (comando.equals("MSG")) {
                     servidor.enviarMsg(lectura.substring(4));
+
+                    Color c = Color.valueOf(flujoEntrada.readLine());
+                    flujoSalida.println(c);
                 }
                 if (comando.equals("CON")) {
                     servidor.interfaz.escribirTexto("Se ha conectado " + lectura.substring(4));
+                    flujoSalida.println(userCont++);
+                    flujoSalida.flush();
                 }
                 if (comando.equals("EXI")) {
                     break;
@@ -55,6 +63,7 @@ public class HiloConexion implements Runnable{
 
     public void enviar(String texto){
         flujoSalida.println(texto);
+        flujoSalida.flush();
     }
 
 }
