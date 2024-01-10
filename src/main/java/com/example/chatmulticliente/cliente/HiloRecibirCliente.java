@@ -26,6 +26,8 @@ public class HiloRecibirCliente implements Runnable {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }catch (NullPointerException nu){
+            System.err.println("Color nulo");
         }
     }
 

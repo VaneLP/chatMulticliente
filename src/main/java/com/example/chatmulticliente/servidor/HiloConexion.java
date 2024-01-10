@@ -36,7 +36,7 @@ public class HiloConexion implements Runnable{
 
                     Color c = Color.valueOf(flujoEntrada.readLine());
                     System.out.println("enviando color: "+c);
-                    servidor.enviarMsg(String.valueOf(c));
+                    servidor.enviarColor(String.valueOf(c));
 
                 }
                 if (comando.equals("CON")) {
@@ -45,6 +45,10 @@ public class HiloConexion implements Runnable{
                     flujoSalida.flush();
                 }
                 if (comando.equals("EXI")) {
+                    servidor.interfaz.escribirTexto("Se ha desconectado " + lectura.substring(4));
+                    flujoEntrada.close();
+                    flujoSalida.close();
+                    conexion.close();
                     break;
                 }
             }

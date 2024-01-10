@@ -16,7 +16,6 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -66,7 +65,6 @@ public class ControladorClienteChat implements Initializable {
             TextInputDialog dialogoText = new TextInputDialog();
             dialogoText.setTitle("Entrada");
             dialogoText.setContentText("Introduce tu apodo: ");
-            dialogoText.initStyle(StageStyle.UTILITY);
 
             //se recibe la respuesta del usuario
             Optional<String> respuesta = dialogoText.showAndWait();
@@ -90,7 +88,7 @@ public class ControladorClienteChat implements Initializable {
             textoNick.setStyle("-fx-text-fill: WHITE");
 
             escribirColor("Conexión establecida", Color.SKYBLUE);
-            flujoSalida.println("CON " + this.campoNick.getText());
+            flujoSalida.println("CON " +  "(" + this.campoNick.getText() + ") ");
             flujoSalida.flush();
 
             //-- COLORES --
@@ -122,13 +120,15 @@ public class ControladorClienteChat implements Initializable {
 //    }
 
     private void enviar() {
-        flujoSalida.println("MSG "+ "("+campoNick.getText()+") "+ mensaje.getText());
-        flujoSalida.flush();
+        if(!mensaje.getText().isBlank()) {
+            flujoSalida.println("MSG " + "(" + campoNick.getText() + ") " + mensaje.getText());
+            flujoSalida.flush();
 
-        flujoSalida.println(colo);
-        flujoSalida.flush();
+            flujoSalida.println(colo);
+            flujoSalida.flush();
 
-        this.mensaje.setText("");
+            this.mensaje.setText("");
+        }
     }
 
     public BufferedReader getEntrada() {
@@ -137,6 +137,7 @@ public class ControladorClienteChat implements Initializable {
 
     public void escribirColor(String mensaje, Color c) {
         Platform.runLater(() -> {
+
             Text text = new Text(mensaje + "\n");
 
             text.setFill(c);
@@ -147,5 +148,9 @@ public class ControladorClienteChat implements Initializable {
         });
     }
 
+    public void salir() {
+        flujoSalida.println("EXI " + "("+campoNick.getText()+") ");
+        flujoSalida.flush();
+    }
 
 }

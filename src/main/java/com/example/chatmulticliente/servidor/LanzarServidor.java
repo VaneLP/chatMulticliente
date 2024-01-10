@@ -46,4 +46,11 @@ public class LanzarServidor implements Runnable{
         }
     }
 
+    public void enviarColor(String color) {
+        for (HiloConexion hc: conexiones) {
+            hc.enviar(color);
+        }
+    }
+
+
 }

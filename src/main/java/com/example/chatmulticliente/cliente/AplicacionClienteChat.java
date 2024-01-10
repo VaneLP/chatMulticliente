@@ -1,6 +1,7 @@
 package com.example.chatmulticliente.cliente;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -22,6 +23,15 @@ public class AplicacionClienteChat extends Application {
         stage.setScene(scene);
         //mostramos la ventana
         stage.show();
+
+        controlador = fxmlLoader.getController();
+    }
+    private ControladorClienteChat controlador;
+
+    @Override
+    public void stop() throws Exception {
+        controlador.salir();
+        Platform.exit();
     }
 
     // ---- MAIN ----

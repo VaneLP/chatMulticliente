@@ -1,6 +1,5 @@
 package com.example.chatmulticliente.servidor;
 
-import com.example.chatmulticliente.cliente.AplicacionClienteChat;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
