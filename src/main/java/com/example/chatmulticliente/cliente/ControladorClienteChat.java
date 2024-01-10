@@ -44,7 +44,11 @@ public class ControladorClienteChat implements Initializable {
     private InetSocketAddress direccion;
     private BufferedReader flujoEntrada;
     private PrintWriter flujoSalida;
-    private Color[] listaColores = new Color[]{Color.rgb(149,128,255),Color.PINK,Color.LIGHTGREEN,Color.PEACHPUFF};
+    private Color[] listaColores = new Color[]{
+            Color.rgb(149,128,255),
+            Color.PINK,
+            Color.LIGHTGREEN,
+            Color.PEACHPUFF};
     private Color colo;
 
     // ---- METODOS ----
@@ -52,6 +56,8 @@ public class ControladorClienteChat implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         conectar();
         recibir();
+
+        mensaje.setOnAction(actionEvent -> enviar());
     }
 
     private void conectar() {

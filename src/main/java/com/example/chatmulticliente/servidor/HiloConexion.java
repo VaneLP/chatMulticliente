@@ -35,7 +35,9 @@ public class HiloConexion implements Runnable{
                     servidor.enviarMsg(lectura.substring(4));
 
                     Color c = Color.valueOf(flujoEntrada.readLine());
-                    flujoSalida.println(c);
+                    System.out.println("enviando color: "+c);
+                    servidor.enviarMsg(String.valueOf(c));
+
                 }
                 if (comando.equals("CON")) {
                     servidor.interfaz.escribirTexto("Se ha conectado " + lectura.substring(4));
@@ -62,6 +64,7 @@ public class HiloConexion implements Runnable{
     }
 
     public void enviar(String texto){
+        System.out.println("reenviando "+texto);
         flujoSalida.println(texto);
         flujoSalida.flush();
     }

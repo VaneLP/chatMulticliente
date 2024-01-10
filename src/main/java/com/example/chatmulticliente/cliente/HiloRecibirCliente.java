@@ -16,8 +16,11 @@ public class HiloRecibirCliente implements Runnable {
         try {
             while (true) {
                 // Leer del flujo y escribir en el chat
+                System.out.println("esperando...");
                 String lectura = cliente.getEntrada().readLine();
+                System.out.println("recibido msg: "+lectura);
                 Color c = Color.valueOf(cliente.getEntrada().readLine());
+                System.out.println("recibido colo: "+c);
 
                 cliente.escribirColor(lectura, c);
             }
