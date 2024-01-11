@@ -79,7 +79,7 @@ public class ControladorClienteChat implements Initializable {
         }
 
         conexion = new Socket();
-        direccion = new InetSocketAddress("localhost", 9876);
+        direccion = new InetSocketAddress("172.18.185.32", 9876);
 
         try {
             conexion.connect(direccion);
