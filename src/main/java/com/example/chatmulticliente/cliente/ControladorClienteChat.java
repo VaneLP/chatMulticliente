@@ -1,5 +1,7 @@
 package com.example.chatmulticliente.cliente;
 
+import com.example.chatmulticliente.servidor.AplicacionServidor;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.StageStyle;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,6 +24,8 @@ public class ControladorClienteChat implements Initializable {
     @FXML
     private Button botonEnviar;
     @FXML
+    private ToggleButton tema;
+    @FXML
     private TextField campoNick;
     @FXML
     private TextField mensaje;
@@ -33,10 +36,33 @@ public class ControladorClienteChat implements Initializable {
     @FXML
     private ScrollPane scrollPane;
 
-
     @FXML
     void enviarMensaje(ActionEvent event) {
         enviar();
+    }
+
+    boolean dia= false;
+
+    @FXML
+    void cambiarTema(ActionEvent event) {
+        String cssDia = "/com/example/chatmulticliente/nord-light.css";
+        String cssNoche = "/com/example/chatmulticliente/dracula.css";
+
+
+
+        if (!dia){
+            System.out.println("tema dia");
+            Application.setUserAgentStylesheet(String.valueOf(AplicacionServidor.class.getResource(cssDia)));
+            tema.setText("☽");
+            dia = true;
+        }
+        else{
+            System.out.println("tema noche");
+            Application.setUserAgentStylesheet(String.valueOf(AplicacionServidor.class.getResource(cssNoche)));
+            tema.setText("☀");
+            dia=false;
+        }
+
     }
 
     private Socket conexion;
@@ -87,6 +113,7 @@ public class ControladorClienteChat implements Initializable {
             flujoSalida = new PrintWriter(conexion.getOutputStream());
             textoNick.setStyle("-fx-text-fill: WHITE");
 
+
             escribirColor("Conexión establecida", Color.SKYBLUE);
             flujoSalida.println("CON " +  "(" + this.campoNick.getText() + ") ");
             flujoSalida.flush();
@@ -120,6 +147,7 @@ public class ControladorClienteChat implements Initializable {
 //    }
 
     private void enviar() {
+
         if(!mensaje.getText().isBlank()) {
             flujoSalida.println("MSG " + "(" + campoNick.getText() + ") " + mensaje.getText());
             flujoSalida.flush();
