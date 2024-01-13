@@ -41,26 +41,25 @@ public class ControladorClienteChat implements Initializable {
         enviar();
     }
 
-    boolean dia= false;
+    boolean noche= true;
+    String cssDia = "/com/example/chatmulticliente/nord-light.css";
+    String cssNoche = "/com/example/chatmulticliente/dracula.css";
+
 
     @FXML
     void cambiarTema(ActionEvent event) {
-        String cssDia = "/com/example/chatmulticliente/nord-light.css";
-        String cssNoche = "/com/example/chatmulticliente/dracula.css";
 
-
-
-        if (!dia){
+        if (noche){
             System.out.println("tema dia");
             Application.setUserAgentStylesheet(String.valueOf(AplicacionServidor.class.getResource(cssDia)));
             tema.setText("☽");
-            dia = true;
+            noche = false;
         }
         else{
             System.out.println("tema noche");
             Application.setUserAgentStylesheet(String.valueOf(AplicacionServidor.class.getResource(cssNoche)));
             tema.setText("☀");
-            dia=false;
+            noche=true;
         }
 
     }
@@ -105,7 +104,7 @@ public class ControladorClienteChat implements Initializable {
         }
 
         conexion = new Socket();
-        direccion = new InetSocketAddress("172.18.185.32", 9876);
+        direccion = new InetSocketAddress("localhost", 9876);
 
         try {
             conexion.connect(direccion);
@@ -147,7 +146,6 @@ public class ControladorClienteChat implements Initializable {
 //    }
 
     private void enviar() {
-
         if(!mensaje.getText().isBlank()) {
             flujoSalida.println("MSG " + "(" + campoNick.getText() + ") " + mensaje.getText());
             flujoSalida.flush();
